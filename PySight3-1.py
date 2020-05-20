@@ -4,6 +4,7 @@
 """
 Created on Sep 20, 2016
 Modified: May 12, 2020
+Modified : May20,2020 Incorporating Isighe Apiv3
 @author: deralexxx
 Script to pull iocs from iSight and push them to MISP
 Modified by: Douglas Molina
@@ -17,7 +18,7 @@ import hashlib
 import hmac
 import json
 import os
-from pymisp import ExpandedPyMISP, MISPEvent, MISPObject
+from pymisp import ExpandedPyMISP, MISPEvent, MISPObject,PyMISP
 #from pymisp import PyMISP, MISPEvent, MISPObject
 import requests
 import sys
@@ -244,6 +245,7 @@ def update_misp_event(misp_instance, event, isight_alert):
         if isight_alert.networkType == 'C&C':
             # Add veris tag to attribute.
             new_attr.add_tag('veris:action:malware:variety="C2"')
+            new_attr.add_tag('vIsight:APIv3')
     # If the report doesn't contain a hostname but contains an IP address, create an ip-src or ip-dst attribute.
     # TODO: Is there a better way to determine whether it's a source or destination IP address?
     elif isight_alert.ip:
@@ -339,7 +341,8 @@ def update_misp_event(misp_instance, event, isight_alert):
     # Lastly, publish the event without sending an alert email.
     # This command expects the event ID instead of a MISPevent as argument.
     print('#####publishing event:', event['id])
-    PySight_settings.logger.debug('#####publishing event: %s', event['id],isight_alert.reportId)                                     
+    PySight_settings.logger.debug('#####publishing event: %s', event['id],isight_alert.reportId) 
+    event.attribute.add_tag('ISIGHT APIv3')                                                
     #misp_instance.publish(event['id'], alert=False)
 
 
