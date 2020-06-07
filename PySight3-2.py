@@ -786,6 +786,7 @@ def isight_prepare_data_request(a_url, a_query, a_pub_key, a_prv_key):
     :rtype:
     """
     header = set_header(a_prv_key, a_pub_key, a_query)
+    header2 = set_header1(   a_prv_key, a_pub_key, a_query)                                                            
     result = isight_load_data(a_url, a_query, header)
     print('######header:',header)
     print('#####result:',result)
