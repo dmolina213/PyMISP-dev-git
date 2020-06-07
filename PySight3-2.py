@@ -4,9 +4,10 @@
 """
 Created on Sep 20, 2016
 Modified: May 12, 2020
-Modified : May20,2020 Incorporating Isighe Apiv3
+Modified : june 6,2020 Incorporating Isighe Apiv3
+PySight3-2.py
 @author: deralexxx
-Script to pull iocs from iSight and push them to MISP
+Script to pull pdf of fireeye resuts from iSight and push them to MISP
 Modified by: Douglas Molina
 Alexander Jaeger
 See CHANGELOG.md for history
