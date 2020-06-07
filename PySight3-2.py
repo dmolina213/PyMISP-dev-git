@@ -735,7 +735,41 @@ def set_header(a_prv_key, a_pub_key, a_query):
         'Date': time_stamp
     }
     return header
+####added this 6/6/2020
+def set_header1(a_prv_key, a_pub_key, a_query):
+    """
+    :param a_prv_key:
+    :type a_prv_key:
+    :param a_pub_key:
+    :type a_pub_key:
+    :param a_query:
+    :type a_query:
+    :return: Header for iSight search to download pdf
+    :rtype:
+    """
 
+    # Prepare the data to calculate the X-Auth-Hash.
+    print('***set header***')
+    accept_version = '2.5'
+    output_format = 'application/json'
+    time_stamp = email.utils.formatdate(localtime=True)
+    string_to_hash = a_query + accept_version + output_format + time_stamp
+
+    # Convert the authentication information from UTF-8 encoding to a bytes object
+    message = bytes(string_to_hash, 'utf-8')
+    secret = bytes(a_prv_key, 'utf-8')
+
+    # Hash the authentication information
+    hashed = hmac.new(secret, message, hashlib.sha256)
+
+    header = {
+        'X-Auth': a_pub_key,
+        'X-Auth-Hash': hashed.hexdigest(),
+        'Accept': output_format,
+        'Accept-Version': accept_version,
+        'Date': time_stamp
+    }
+    return header                                                               
 
 # Prepare the request to the FireEye iSight API.
 def isight_prepare_data_request(a_url, a_query, a_pub_key, a_prv_key):
