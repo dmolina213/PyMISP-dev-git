@@ -625,7 +625,7 @@ def misp_process_isight_indicators(a_result):
 
 
 # Make the FireEye iSight API request.
-def isight_load_data(a_url, a_query, a_header):
+def isight_load_data(a_url, a_query, a_header,a_header1):
     """
     :param a_url:
     :type a_url:
@@ -656,7 +656,7 @@ def isight_load_data(a_url, a_query, a_header):
 
     PySight_settings.logger.debug('FireEye iSight request URL: %s', url_to_load)
     PySight_settings.logger.debug('FireEye iSight request header: %s', a_header)
-
+    PySight_settings.logger.debug('FireEye iSight request header: %s', a_header1)
     try:
         r = requests.get(url_to_load, headers=a_header, proxies=isight_proxies, verify=False)
     except urllib.error.HTTPError as e:
@@ -786,9 +786,10 @@ def isight_prepare_data_request(a_url, a_query, a_pub_key, a_prv_key):
     :rtype:
     """
     header = set_header(a_prv_key, a_pub_key, a_query)
-    header2 = set_header1(   a_prv_key, a_pub_key, a_query)                                                            
-    result = isight_load_data(a_url, a_query, header)
+    header1 = set_header1(a_prv_key, a_pub_key, a_query)                                                            
+    result = isight_load_data(a_url, a_query, header,header2)
     print('######header:',header)
+    print('#######header1:',header1)                                                         
     print('#####result:',result)
     if not result:
         PySight_settings.logger.debug('Something went wrong when retrieving indicators from the FireEye iSight API')
