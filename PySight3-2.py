@@ -751,7 +751,7 @@ def set_header1(a_prv_key, a_pub_key, a_query):
     # Prepare the data to calculate the X-Auth-Hash.
     print('***set header***')
     accept_version = '2.5'
-    output_format = 'application/json'
+    output_format = 'pdf&detail=full'
     time_stamp = email.utils.formatdate(localtime=True)
     string_to_hash = a_query + accept_version + output_format + time_stamp
 
