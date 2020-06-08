@@ -39,3 +39,8 @@ for link in soup.select("a[href$='.pdf']"):
     filename = os.path.join(folder_location,link['href'].split('/')[-1])
     with open(filename, 'wb') as f:
         f.write(requests.get(urljoin(url,link['href'])).content)
+        
+        
+        
+###############################
+https://www.geeksforgeeks.org/downloading-files-web-using-python/
