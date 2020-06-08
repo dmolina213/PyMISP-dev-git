@@ -389,7 +389,7 @@ def create_misp_event(misp_instance, isight_report_instance):
     #misp_instance.tag(my_event, 'basf:source="iSight"')
     misp_instance.tag(my_event, 'CTI feed: Fireeye:iSight')
     misp_instance.tag(my_event, 'tlp:amber')
-    misp_instance.tag(my_event, 'report id', isight_report_instance.reportId)
+    misp_instance.tag(my_event, 'report id %s', isight_report_instance.reportId)
     
                                                                      
 
