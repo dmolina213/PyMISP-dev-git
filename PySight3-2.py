@@ -659,6 +659,7 @@ def isight_load_data(a_url, a_query, a_header,a_header1):
     PySight_settings.logger.debug('FireEye iSight request header: %s', a_header1)
     try:
         r = requests.get(url_to_load, headers=a_header, proxies=isight_proxies, verify=False)
+        r1 =requests.get(url_to_load, headers=a_header1, proxies=isight_proxies, verify=False)
     except urllib.error.HTTPError as e:
         PySight_settings.logger.debug('Urllib HTTP error code: %s', e.code)
         PySight_settings.logger.debug('Urllib HTTP error message: %s', e.read())
@@ -676,12 +677,25 @@ def isight_load_data(a_url, a_query, a_header,a_header1):
     elif r.status_code != 200:
         PySight_settings.logger.debug('Request not successful: %s', r.text)
         return False
+    #####added######
+     if r1.status_code == 204:
+        PySight_settings.logger.debug('No result found for search')
+        return False
+    elif r1.status_code == 404:
+        PySight_settings.logger.debug('%s: check the FireEye iSight API URL', r1.reason)
+        PySight_settings.logger.debug('%s', r1.text)
+        return False
+    elif r1.status_code != 200:
+        PySight_settings.logger.debug('Request not successful: %s', r1.text)
+        return False
 
     return_data_cleaned = r.text.replace('\n', '')
+    return_data_cleaned1 = r1.text.replace('\n','')                                                                 
 
     json_return_data_cleaned = json.loads(return_data_cleaned)
+    json_return_data_cleaned1 = json.loads(return_data_cleaned1)                                                     
     PySight_settings.logger.debug('Number of indicators returned: %s', len(json_return_data_cleaned['message']))
-
+    PySight_settings.logger.debug('Number of indicators returned: %s', len(json_return_data_cleaned1['message']))
     if not json_return_data_cleaned['success']:
         PySight_settings.logger.debug('Error with the FireEye iSight API connection %s',
                                       json_return_data_cleaned['message']['description'])
@@ -762,14 +776,14 @@ def set_header1(a_prv_key, a_pub_key, a_query):
     # Hash the authentication information
     hashed = hmac.new(secret, message, hashlib.sha256)
 
-    header = {
+    header1 = {
         'X-Auth': a_pub_key,
         'X-Auth-Hash': hashed.hexdigest(),
         'Accept': output_format,
         'Accept-Version': accept_version,
         'Date': time_stamp
     }
-    return header                                                               
+    return header1                                                               
 
 # Prepare the request to the FireEye iSight API.
 def isight_prepare_data_request(a_url, a_query, a_pub_key, a_prv_key):
