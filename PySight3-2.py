@@ -407,8 +407,13 @@ def create_misp_event(misp_instance, isight_report_instance):
         misp_instance.tag(my_event, 'basf:technology="OT"')
     if 'Cyber Crime' in isight_report_instance.ThreatScape:
         misp_instance.tag(my_event, 'veris:actor:external:variety="Organized crime"')
-
-    # Add the iSight report ID and web link as attributes.
+    #######added 6/9/2020 dpm
+    if 'Covid' in isight_report_instance.ThreatScape:
+        misp_instance.tag(my_event, 'Covid-19')
+    if 'Corona' in isight_report_instance.ThreatScape:
+        misp_instance.tag(my_event,'Covid-19')
+                                                                     
+    ###### Add the iSight report ID and web link as attributes.
     if isight_report_instance.reportId:
         misp_instance.add_attribute(my_event, {'category': 'External analysis', 'type': 'text', 'to_ids': False,
                                                'value': isight_report_instance.reportId}, pythonify=True)
